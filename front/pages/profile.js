@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import AppLayout from "../components/AppLayout";
 import NicknameEditForm from "../components/NicknameEditForm";
+import FollowList from "../components/FollowList";
 
 const Profile = () => {
     const followerList = [{ nickname: '신동주' }, { nickname: '녹차맛개구리' }, { nickname: '동동' }];
@@ -28,7 +29,7 @@ const Profile = () => {
             </AppLayout>
 
         </>
-    )
+    );
 };
 
 export default Profile;

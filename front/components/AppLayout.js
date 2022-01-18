@@ -44,7 +44,6 @@ const AppLayout = ({children}) => {
                     <a href="https://eastzoo.co.kr" target="_blank" rel="noreferrer noopener">Made by EastZoo</a>
                 </Col>
             </Row>
-            {children}
         </div>
     );
 };
