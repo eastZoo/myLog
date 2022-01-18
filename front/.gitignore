@@ -1,4 +1,4 @@
 /node_modules
 ### NextJS ###
 # Next build dir
-.next
+/.next
