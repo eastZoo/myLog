@@ -10,6 +10,7 @@ const dummy = {
     isLoggedIn: false,
 };
 
+// eslint-disable-next-line react/prop-types
 const UserProfile = ({ setIsLoggedIn }) => {
     const onLogOut = useCallback(() => {
         setIsLoggedIn(false);
