@@ -19,6 +19,7 @@ const AppLayout = ({children}) => {
     // reducer, index로 인한 중앙관리로 컴포넌트별 데이터관리 불필요
 
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
+    // const {isLoggedIn} = useSelector((state) => state.user)
     return (
         <div>
             <Menu mode="horizontal">

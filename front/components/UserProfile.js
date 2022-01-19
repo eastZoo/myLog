@@ -2,7 +2,7 @@ import { Avatar, Card, Button } from 'antd';
 import React, { useCallback }from 'react';
 import {useDispatch} from "react-redux";
 
-import { logoutAction } from '../reducers';
+import { logoutAction } from '../reducers/user';
 
 
 // eslint-disable-next-line react/prop-types
