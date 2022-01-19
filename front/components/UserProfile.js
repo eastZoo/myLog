@@ -1,32 +1,29 @@
 import { Avatar, Card, Button } from 'antd';
 import React, { useCallback }from 'react';
+import {useDispatch} from "react-redux";
 
+import { logoutAction } from '../reducers';
 
-const dummy = {
-    nickname: '동주',
-    Posts: [],
-    Followings: [],
-    Followers: [],
-    isLoggedIn: false,
-};
 
 // eslint-disable-next-line react/prop-types
-const UserProfile = ({ setIsLoggedIn }) => {
+const UserProfile = () => {
+    const dispatch = useDispatch();
+
     const onLogOut = useCallback(() => {
-        setIsLoggedIn(false);
+        dispatch(logoutAction());
     }, []);
 
     return (
         <Card
             actions={[
-                <div key="twit">짹짹<br />{dummy.Posts.length}</div>,
-                <div key="following">팔로잉<br />{dummy.Followings.length}</div>,
-                <div key="follower">팔로워<br />{dummy.Followers.length}</div>,
+                <div key="twit">짹짹<br />0</div>,
+                <div key="following">팔로잉<br />0</div>,
+                <div key="follower">팔로워<br />0</div>,
             ]}
         >
             <Card.Meta
-                avatar={<Avatar>{dummy.nickname[0]}</Avatar>}
-                title={dummy.nickname}
+                avatar={<Avatar>녹차맛개구리</Avatar>}
+                title="녹차맛개구리"
             />
             <Button onClick={onLogOut}>로그아웃</Button>
         </Card>

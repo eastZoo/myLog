@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import useInput from '../hooks/useInput';
+import { useDispatch } from "react-redux";
+import {loginAction} from "../reducers";
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
@@ -12,15 +13,14 @@ const ButtonWrapper = styled.div`
 const FormWrapper = styled(Form)`
   padding: 10px;
 `;
-const LoginForm = ({setIsLoggedIn}) => {
+const LoginForm = () => {
+    const dispatch = useDispatch(); // reducer 사용으로 데이터 받아오기위해해    const [id, onChangeId] = useInput('');
     const [id, onChangeId] = useInput('');
     const [password, onChangePassword] = useInput('');
 
     const onSubmitForm = useCallback(() => {
-        console.log({
-            id, password,
-        });
-        setIsLoggedIn(true);
+        console.log(id, password);
+        dispatch(loginAction({id, password}));
     }, [id, password]);
 
     return (
@@ -43,8 +43,5 @@ const LoginForm = ({setIsLoggedIn}) => {
     );
 };
 
-LoginForm.prototype = {
-    setIsLoggedIn: PropTypes.func.isRequired,
-};
 
 export default LoginForm;
