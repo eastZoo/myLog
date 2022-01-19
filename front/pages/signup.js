@@ -18,7 +18,7 @@ const Signup = () => {
     const [passwordCheck, setPasswordCheck] = useState('');
     const onChangePasswordCheck = useCallback((e) => {
         setPasswordCheck(e.target.value);
-        setPasswordCheck(e.target.value !== password);
+        // setPasswordCheck(e.target.value !== password);
     }, [password]);
 
     const [termError, setTermError] = useState(false);
