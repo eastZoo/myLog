@@ -5,7 +5,6 @@ import post from "./post";
 
 const initialState = {
     user:{
-
     },
     post:{
 
