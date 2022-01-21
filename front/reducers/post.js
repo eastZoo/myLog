@@ -5,7 +5,7 @@ export const initialState = {
             id: 1,
             nickname: '동주'
         },
-        content: '첫 번째 게시글 #해시태그 #익스프레스',
+        content: '첫 번째 게시글 #wakLog #기분조아',
         Images: [{
             src: 'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDA0MjVfOTIg%2FMDAxNTg3ODE5NzAyMDQy.SOWLE41oKiZ0GOH8UHW0-zLda78cJRcUyw_8F7VyCxwg.ebqJGZ3BpEdSn5ajaGBuEebzo2qKGmWh70Uh6khDFB8g.PNG%2F%25C0%25D4_%25B4%25AB_%25C0%25A7%25C4%25A1_%252B100.png&type=sc960_832'
         }, {
