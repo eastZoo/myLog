@@ -1,7 +1,7 @@
 import { createWrapper } from 'next-redux-wrapper';
 import {applyMiddleware, createStore, compose } from "redux";
 import {composeWithDevTools} from "redux-devtools-extension";
-
+import thunkMiddleware from 'redux-thunk';
 import reducer from '../reducers';
 
 const configureStore = () => {
