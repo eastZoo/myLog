@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {Card, Button, Avatar, Popover, List, Comment} from 'antd';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
-import Link from 'next/link';
+
 
 import { useSelector } from 'react-redux';
 import PostImages from "./PostImages";
