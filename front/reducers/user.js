@@ -1,3 +1,6 @@
+// 비동기는 항상 REQUEST, SUCCESS, FAILURE 기억!!!
+
+
 export const initialState = {
     isLoggingIn: false,  // 로그인 시도중 true면 로딩창을 띄우는 용도
     isLoggedIn: false,
@@ -7,20 +10,6 @@ export const initialState = {
     loginData: {},
 };
 
-// export const  loginAction = (data) => {
-//     return (dispatch, getState) => {
-//         const state = getState();
-//         dispatch(loginRequestAction());
-//         axios.post('/api/login')
-//             .then((res) => {
-//                 dispatch(loginSuccessAction(res.data));
-//             })
-//             .catch((err) => {
-//                 dispatch(loginFailureAction(err));
-//             })
-//     }
-// }
-
 export const loginRequestAction = (data) => {
     return {
         type: 'LOG_IN_REQUEST',
@@ -28,35 +17,12 @@ export const loginRequestAction = (data) => {
     }
 }
 
-export const loginSuccessAction = (data) => {
-    return {
-        type: 'LOG_IN_SUCCESS',
-        data,
-    }
-}
-
-export const loginFailureAction = (data) => {
-    return {
-        type: 'LOG_IN_FAILURE',
-    }
-}
+//saga가 알아서 SUCCESS, FAILURE 만들어주기때문에 reducers에서 만들필요가 없기에 삭제
 
 export const logoutRequestAction = (data) => {
     return {
         type: 'LOG_OUT_REQUEST',
         data,
-    }
-}
-
-export const logoutSuccessAction = (data) => {
-    return {
-        type: 'LOG_OUT_SUCCESS',
-    }
-}
-
-export const logoutFailureAction = (data) => {
-    return {
-        type: 'LOG_OUT_FAILURE',
     }
 }
 
@@ -72,7 +38,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isLoggingIn: false,
                 isLoggedIn: true,
-                me: action.data,
+                me: { ...action.data, nickname: "eastzoo"},
             };
         case 'LOG_IN_FAILURE':
             return {

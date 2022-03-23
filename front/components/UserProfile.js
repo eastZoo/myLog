@@ -1,16 +1,17 @@
 import { Avatar, Card, Button } from 'antd';
 import React, { useCallback }from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-import { logoutAction } from '../reducers/user';
+import { logoutRequestAction } from '../reducers/user';
 
 
 // eslint-disable-next-line react/prop-types
 const UserProfile = () => {
     const dispatch = useDispatch();
+    const { me, isLoggingOut } = useSelector((state) => state.user); //me 데이터 사용가능! 더미데이터?
 
     const onLogOut = useCallback(() => {
-        dispatch(logoutAction());
+        dispatch(logoutRequestAction());
     }, []);
 
     return (
@@ -22,10 +23,10 @@ const UserProfile = () => {
             ]}
         >
             <Card.Meta
-                avatar={<Avatar>녹차맛개구리</Avatar>}
-                title="녹차맛개구리"
+                avatar={<Avatar>{me.nickname[0]}</Avatar>}
+                title={me.nickname}
             />
-            <Button onClick={onLogOut}>로그아웃</Button>
+            <Button onClick={onLogOut} loading={isLoggingOut}>로그아웃</Button>
         </Card>
     );
 };
