@@ -10,13 +10,11 @@ export const initialState = {
     loginData: {},
 };
 
-export const loginRequestAction = (data) => {
-    return {
-        type: 'LOG_IN_REQUEST',
-        data,
-    }
-}
-
+export const loginRequestAction = (data) => ({
+    type: 'LOG_IN_REQUEST',
+    data,
+  });
+  
 //saga가 알아서 SUCCESS, FAILURE 만들어주기때문에 reducers에서 만들필요가 없기에 삭제
 
 export const logoutRequestAction = (data) => {
@@ -29,6 +27,7 @@ export const logoutRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'LOG_IN_REQUEST':
+            console.log('reducer login');
             return {
                 ...state,
                 isLoggingIn: true,
@@ -38,7 +37,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isLoggingIn: false,
                 isLoggedIn: true,
-                me: { ...action.data, nickname: "eastzoo"},
+                me: { ...action.data, nickname: 'eastzoo' },
             };
         case 'LOG_IN_FAILURE':
             return {
