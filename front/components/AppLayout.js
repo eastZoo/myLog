@@ -32,22 +32,21 @@ const SearchInput = styled(Input.Search)`
 const AppLayout = ({children}) => {
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
     // reducer, index로 인한 중앙관리로 컴포넌트별 데이터관리 불필요
+    const { me } = useSelector((state) => state.user);
 
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
-    // const {isLoggedIn} = useSelector((state) => state.user)
     return (
         <div>
             <Global/>
             <Menu mode="horizontal">
-                <Menu.Item>
+                <Menu.Item key="home">
                     <Link href="/"><a>동주Home</a></Link>
                 </Menu.Item>
-                <Menu.Item>
+                <Menu.Item key="profile">
                     <Link href="/profile"><a>프로필</a></Link>
                 </Menu.Item>
-                <Menu.Item>
+                <Menu.Item key="mail">
                     {/* ezslint-disable-next-line react/jsx-no-undef */}
-                    <SearchInput enterButton/>
+                    <Input.Search enterButton style={{ verticalAlign: 'middle' }}/>
                 </Menu.Item>
                 <Menu.Item>
                     <Link href="/signup"><a>회원가입</a></Link>
@@ -55,7 +54,7 @@ const AppLayout = ({children}) => {
             </Menu>
             <Row gutter={8}>
                 <Col xs={24} md={6}>
-                    {isLoggedIn ? <UserProfile /> : <LoginForm />}
+                    {me ? <UserProfile /> : <LoginForm />}
                 </Col>
                 <Col xs={24} md={12}>
                     {children}
