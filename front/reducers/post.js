@@ -1,3 +1,4 @@
+
 export const initialState = {
   mainPosts: [{
     id: 1,
@@ -53,16 +54,16 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = {
+const dummyPost = (data) => ({
   id: 2,
-  content: '더미데이터입니다.',
+  content: data,
   User: {
     id: 1,
     nickname: '녹차맛개구리',
   },
   Images: [],
   Comments: [],
-};
+});
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -76,7 +77,7 @@ const reducer = (state = initialState, action) => {
     case ADD_POST_SUCCESS:
       return {
         ...state,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [dummyPost(action.data), ...state.mainPosts],
         addPostLoading: false,
         addPostDone: true,
       };
