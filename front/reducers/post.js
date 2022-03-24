@@ -1,5 +1,6 @@
 import shortId from 'shortid';
 
+// 대문자로 적힌 부분은 DB에서 주는 부분이기에 id가 다 맥여있다
 export const initialState = {
   mainPosts: [{
     id: 1,
@@ -9,19 +10,26 @@ export const initialState = {
     },
     content: '첫 번째 게시글 #wakLog #기분조아',
     Images: [{
+      id: shortId.generate(),
       src: 'http://res.heraldm.com/phpwas/restmb_allidxmake.php?idx=5&simg=201810151616036915687_20181015161843_01.jpg',
     }, {
+      id: shortId.generate(),
       src: 'https://static.news.zumst.com/images/111/2018/10/16/b54d109aeb0341f4b92453f452f0ad0a.jpg',
     }, {
+      id: shortId.generate(),
       src: 'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDA0MDlfMjMz%2FMDAxNTg2NDIwMTkyNjk3.Z7hx5bPJIicGYm0AEQZhChknIEQ0R80Lr2pBkbYehDkg.2HpwzHpiG6jKxxX4fqpUdbgL9HfPGR0x48JLzvSlvlgg.GIF%2FexternalFile.gif&type=sc960_832_gif',
     }],
     Comments: [{
+      id: shortId.generate(),
       User: {
+        id: shortId.generate(),
         nickname: 'eastzoo',
       },
       content: '우왕 굳~',
     }, {
+      id: shortId.generate(),
       User: {
+        id: shortId.generate(),
         nickname: 'wkadoo',
       },
       content: '기분조아~',
