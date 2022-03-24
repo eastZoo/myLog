@@ -30,7 +30,9 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
-
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
 };
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -74,6 +76,7 @@ const reducer = (state = initialState, action) => {
     case ADD_POST_SUCCESS:
       return {
         ...state,
+        mainPosts: [dummyPost, ...state.mainPosts],
         addPostLoading: false,
         addPostDone: true,
       };
