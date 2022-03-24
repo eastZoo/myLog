@@ -1,17 +1,17 @@
 // 비동기는 항상 REQUEST, SUCCESS, FAILURE 기억!!!
 export const initialState = {
-    logInLoading: false, // 로그인 시도중
-    logInDone: false,
-    logInError: null,
-    logOutLoading: false, // 로그아웃 시도중
-    logOutDone: false,
-    logOutError: null,
-    signUpLoading: false, // 회원가입 시도중
-    signUpDone: false,
-    signUpError: null,
-    me: null,
-    signUpData: {},
-    loginData: {},
+  logInLoading: false, // 로그인 시도중
+  logInDone: false,
+  logInError: null,
+  logOutLoading: false, // 로그아웃 시도중
+  logOutDone: false,
+  logOutError: null,
+  signUpLoading: false, // 회원가입 시도중
+  signUpDone: false,
+  signUpError: null,
+  me: null,
+  signUpData: {},
+  loginData: {},
 };
 
 /*  순수한 문자열로 되어있는 액션은 오타에 취야하다 변수로 빼자!!  */
@@ -29,95 +29,91 @@ export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 
 const dummyUser = (data) => ({
-    ...data,
-    nickname: 'eastzoo',
-    id: 1,
-    Posts: [{ id: 1 }],
-    Followings: [{ nickname: 'jini' }, { nickname: 'cocoball' }, { nickname: 'dongha' }],
-    Followers: [{ nickname: 'jini' }, { nickname: 'cocoball' }, { nickname: 'dongha' }],
-  });
-
+  ...data,
+  nickname: 'eastzoo',
+  id: 1,
+  Posts: [{ id: 1 }],
+  Followings: [{ nickname: 'jini' }, { nickname: 'cocoball' }, { nickname: 'dongha' }],
+  Followers: [{ nickname: 'jini' }, { nickname: 'cocoball' }, { nickname: 'dongha' }],
+});
 
 export const loginRequestAction = (data) => ({
-    type: LOG_IN_REQUEST,
-    data,
-  });
-  
-//saga가 알아서 SUCCESS, FAILURE 만들어주기때문에 reducers에서 만들필요가 없기에 삭제
+  type: LOG_IN_REQUEST,
+  data,
+});
 
-export const logoutRequestAction = (data) => {
-    return {
-        type: LOG_OUT_REQUEST,
-        data,
-    }
-}
+// saga가 알아서 SUCCESS, FAILURE 만들어주기때문에 reducers에서 만들필요가 없기에 삭제
+
+export const logoutRequestAction = () => ({
+  type: LOG_OUT_REQUEST,
+});
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case LOG_IN_REQUEST:
-            console.log('reducer login');
-            return {
-                ...state,
-                logInLoading: true,
-                logInError : null,
-                logInDone : false,
-            };
-        case LOG_IN_SUCCESS:
-            return {
-                ...state,
-                logInLoading: false,
-                logInDone: true,
-                me: dummyUser(action.data),
-            };
-        case LOG_IN_FAILURE:
-            return {
-                ...state,
-                logInLoading: false,
-                logInError: action.error,
-            };
-        case LOG_OUT_REQUEST:
-            return {
-                ...state,
-                logOutLoading : true,
-                logOutError : null,
-                logOutDone : false,
-            };
-        case LOG_OUT_SUCCESS:
-            return {
-                ...state,
-                logOutLoading : false,
-                logOutDone : true,
-                me : null,
-            };
-        case LOG_OUT_FAILURE:
-            return {
-                ...state,
-                logOutLoading : false, //실패해도 로딩은 false
-                logOutError : action.error,
-            };
-        case SIGN_UP_REQUEST:
-            return {
-                ...state,
-                signUpLoading : true,
-                signUpError : null,
-                signUpDone : false,
-            };
-        case SIGN_UP_SUCCESS:
-            return {
-                ...state,
-                signUpLoading : false,
-                signUpDone : true,
-            };
-            
-        case SIGN_UP_FAILURE:
-            return {
-                ...state,
-                signUpLoading : false,
-                signUpError : action.error,
-            };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case LOG_IN_REQUEST:
+      console.log('reducer login');
+      return {
+        ...state,
+        logInLoading: true,
+        logInError: null,
+        logInDone: false,
+      };
+    case LOG_IN_SUCCESS:
+      return {
+        ...state,
+        logInLoading: false,
+        logInDone: true,
+        me: dummyUser(action.data),
+      };
+    case LOG_IN_FAILURE:
+      return {
+        ...state,
+        logInLoading: false,
+        logInError: action.error,
+      };
+    case LOG_OUT_REQUEST:
+      return {
+        ...state,
+        logOutLoading: true,
+        logOutError: null,
+        logOutDone: false,
+      };
+    case LOG_OUT_SUCCESS:
+      return {
+        ...state,
+        logOutLoading: false,
+        logOutDone: true,
+        me: null,
+      };
+    case LOG_OUT_FAILURE:
+      return {
+        ...state,
+        logOutLoading: false, // 실패해도 로딩은 false
+        logOutError: action.error,
+      };
+    case SIGN_UP_REQUEST:
+      return {
+        ...state,
+        signUpLoading: true,
+        signUpError: null,
+        signUpDone: false,
+      };
+    case SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        signUpLoading: false,
+        signUpDone: true,
+      };
+
+    case SIGN_UP_FAILURE:
+      return {
+        ...state,
+        signUpLoading: false,
+        signUpError: action.error,
+      };
+    default:
+      return state;
+  }
 };
 
 export default reducer;

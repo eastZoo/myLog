@@ -3,5 +3,4 @@
 ### NextJS ###
 # Next build dir
 /.next
-
-.idea
+/.idea

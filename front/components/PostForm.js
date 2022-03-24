@@ -1,32 +1,29 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addPost } from '../reducers/post';
+import useInput from '../hooks/useInput';
 
 const PostForm = () => {
     const { imagePaths, postAdded } = useSelector(state => state.post);
-    const [text, setText] = useState('');
+    const [text, onChangeText, setText] = useInput('');
     const dispatch = useDispatch();
-    const imageInput = useRef();    //이미지 파일 받을때
 
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, [imageInput.current]);
+    const imageInput = useRef();    //이미지 파일 받을때
+    
+    const onSubmit = useCallback(() => {
+        dispatch(addPost(text));
+    }, [text]);
 
     useEffect(() => {
         if (postAdded) {
             setText('');
         }
     }, [postAdded]);
-
-    const onChangeText = useCallback((e) => {
-        setText(e.target.value);
-    }, []);
-
-    const onSubmit = useCallback(() => {
-        dispatch(addPost);
-    }, []);
 
     return (
         <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
