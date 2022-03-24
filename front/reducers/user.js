@@ -35,6 +35,10 @@ export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
 export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
 
+//user reducer 상태를 바꿀 수 있는 상태를 만들고 saga post에서 건드리!
+export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+
 const dummyUser = (data) => ({
   ...data,
   nickname: 'eastzoo',
@@ -131,12 +135,19 @@ const reducer = (state = initialState, action) => {
         changeNicknameLoading: false,
         changeNicknameDone: true,
       };
-
     case CHANGE_NICKNAME_FAILURE:
       return {
         ...state,
         changeNicknameLoading: false,
         changeNicknameError: action.error,
+      };
+    case ADD_POST_TO_ME:
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: [{ id: action.data}, ...state.me.Posts],
+        },
       };
     default:
       return state;

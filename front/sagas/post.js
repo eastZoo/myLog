@@ -1,5 +1,8 @@
 import axios from 'axios';
+import shortId from 'shortid';
+
 import { delay, put, takeLatest, all, fork } from 'redux-saga/effects';
+import { ADD_POST_TO_ME } from '../reducers/user';
 import {
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
@@ -17,9 +20,17 @@ function* addPost(action) {
   try {
     // const result = yield call(addPostAPI, action.data);
     yield delay(1000);
+    const id = shortId.generate();
     yield put({
       type: ADD_POST_SUCCESS,
-      data: action.data,
+      data: {
+        id,
+        content: action.data,
+      },
+    });
+    yield put({
+      type: ADD_POST_TO_ME,
+      data: id,
     });
   } catch (err) {
     yield put({
