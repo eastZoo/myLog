@@ -1,4 +1,5 @@
 import shortId from 'shortid';
+import produce from "immer";
 
 // 대문자로 적힌 부분은 DB에서 주는 부분이기에 id가 다 맥여있다
 export const initialState = {
@@ -90,77 +91,68 @@ const dummyPost = (data) => ({
   Comments: [],
 });
 
-const reducer = (state = initialState, action) => {
+// 중요!! reducer란?? 이전상태를 액션을 통해 다음 상태로 만들어내는 함수!!(단 불변성을 지키면서)
+const reducer = (state = initialState, action) => produce(state, (draft) => {
+  //draft(state가 이름이바뀐 상태)는 불변성 상관없이 막 바꿔도 immer가 알아서 state를 알아서 불변성 지켜서 다음 스테이트로 만들어줌
   switch (action.type) {
     case ADD_POST_REQUEST:
-      return {
-        ...state,
-        addPostLoading: true,
-        addPostDone: false,
-        addPostError: null,
-      };
+      draft.addPostLoading = true;
+      draft.addPostDone = false;
+      draft.addPostError = null;
+      break;
     case ADD_POST_SUCCESS:
-      return {
-        ...state,
-        mainPosts: [dummyPost(action.data), ...state.mainPosts],
-        addPostLoading: false,
-        addPostDone: true,
-      };
+      draft.addPostLoading = false;
+      draft.addPostDone = true;
+      draft.mainPosts.unshift(dummyPost(action.data));
+      break;
     case ADD_POST_FAILURE:
-      return {
-        ...state,
-        addPostLoading: false,
-        addPostError: action.error,
-      };
+      draft.addPostLoading = false;
+      draft.addPostError = action.error;
+      break;
     case ADD_COMMENT_REQUEST:
-      return {
-        ...state,
-        addCommentLoading: true,
-        addCommentDone: false,
-        addCommentError: null,
-      };
+      draft.addCommentLoading = true;
+      draft.addCommentDone = false;
+      draft.addCommentError = null;
+      break;
     case ADD_COMMENT_SUCCESS: {
-      const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
-      const post = { ...state.mainPosts[postIndex] };
-      post.Comments = [dummyComment(action.data.content), ...post.Comments];
-      const mainPosts = [...state.mainPosts];
-      mainPosts[postIndex] = post;
-      return {
-        ...state,
-        mainPosts,
-        addCommentLoading: false,
-        addCommentDone: true,
-      };
+      const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+      post.Comments.unshift(dummyComment(action.data.content));
+      draft.addCommentLoading = false;
+      draft.addCommentDone = true;
+      break;
+      // const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+      // const post = { ...state.mainPosts[postIndex] };
+      // post.Comments = [dummyComment(action.data.content), ...post.Comments];
+      // const mainPosts = [...state.mainPosts];
+      // mainPosts[postIndex] = post;
+      // return {
+      //   ...state,
+      //   mainPosts,
+      //   addCommentLoading: false,
+      //   addCommentDone: true,
+      // };
     }
     case ADD_COMMENT_FAILURE:
-      return {
-        ...state,
-        addCommentLoading: false,
-        addCommentError: action.error,
-      };
+      draft.addCommentLoading = false;
+      draft.addCommentError = action.error;
+      break;
     case REMOVE_POST_REQUEST:
-      return {
-        ...state,
-        removePostLoading: true,
-        removePostDone: false,
-        removePostError: null,
-      };
+      draft.removePostLoading = true;
+      draft.removePostDone = false;
+      draft.removePostError = null;
+      break;
     case REMOVE_POST_SUCCESS:
-      return {
-        ...state,
-        mainPosts: state.mainPosts.filter((v) => v.id !== action.data), // 보통 지울때는 filter로 불변성 규칙 지키면서 지워줌 !== 지우려는 애만 지우는것
-        removePostLoading: false,
-        removePostDone: true,
-      };
+      draft.removePostLoading = false;
+      draft.removePostDone = true;
+      draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data);
+      break;
     case REMOVE_POST_FAILURE:
-      return {
-        ...state,
-        removePostLoading: false,
-        removePostError: action.error,
-      };
+      draft.removePostLoading = false;
+      draft.removePostError = action.error;
+      break;
     default:
-      return state;
+      break;
   }
-};
+});
 
 export default reducer;
