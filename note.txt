@@ -1,3 +1,9 @@
 # npm i immer
 불변성 지켜주기 위해 필수템 코드정리 react에서 가능 hook버전 따로있음
 
+# npm i faker
+더미데이터 라이브러리, 가짜 닉네임 만들거나 할때
+
+#npm i shorid
+더미데이터 아이디 생성
+

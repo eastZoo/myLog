@@ -1,6 +1,6 @@
 import shortId from 'shortid';
-import produce from "immer";
-
+import produce from 'immer';
+import faker from 'faker';
 // 대문자로 적힌 부분은 DB에서 주는 부분이기에 id가 다 맥여있다
 export const initialState = {
   mainPosts: [{
@@ -49,6 +49,28 @@ export const initialState = {
   removePostError: null,
 };
 
+// use faker && shortId to make dummy!!
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20).fill().map(() => ({
+    id: shortId.generate(),
+    User: {
+      id: shortId.generate(),
+      nickname: faker.name.findName(),
+    },
+    content: faker.lorem.paragraph(),
+    Images: [{
+      src: faker.image.imageUrl(),
+    }],
+    Comments: [{
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.sentence(),
+    }],
+  })),
+);
+
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
@@ -93,7 +115,7 @@ const dummyPost = (data) => ({
 
 // 중요!! reducer란?? 이전상태를 액션을 통해 다음 상태로 만들어내는 함수!!(단 불변성을 지키면서)
 const reducer = (state = initialState, action) => produce(state, (draft) => {
-  //draft(state가 이름이바뀐 상태)는 불변성 상관없이 막 바꿔도 immer가 알아서 state를 알아서 불변성 지켜서 다음 스테이트로 만들어줌
+  // draft(state가 이름이바뀐 상태)는 불변성 상관없이 막 바꿔도 immer가 알아서 state를 알아서 불변성 지켜서 다음 스테이트로 만들어줌
   switch (action.type) {
     case ADD_POST_REQUEST:
       draft.addPostLoading = true;
