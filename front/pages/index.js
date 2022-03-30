@@ -36,6 +36,7 @@ const Home = () => {
 
   return (
     <AppLayout>
+      {me && <PostForm />}
       {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
       <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} />
     </AppLayout>

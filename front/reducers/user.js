@@ -14,6 +14,12 @@ export const initialState = {
   changeNicknameLoading: false, // 닉네임 변경 시도중
   changeNicknameDone: false,
   changeNicknameError: null,
+  followLoading: false, // 팔로우 시도중
+  followDone: false,
+  followError: null,
+  unfollowLoading: false, // 언팔로우 시도중
+  unfollowDone: false,
+  unfollowError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -36,6 +42,14 @@ export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
 export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
+
+export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
+export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
+export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
+
+export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
+export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
+export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 //user reducer 상태를 바꿀 수 있는 상태를 만들고 saga post에서 건드리!
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
@@ -116,6 +130,34 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case CHANGE_NICKNAME_FAILURE:
       draft.changeNicknameLoading = false;
       draft.changeNicknameError = action.error;
+      break;
+    case FOLLOW_REQUEST:
+      draft.followLoading = true;
+      draft.followError = null;
+      draft.followDone = false;
+      break;
+    case FOLLOW_SUCCESS:
+      draft.followLoading = false;
+      draft.me.Followings.push({ id: action.data });  //팔로잉 목록에 아이디 push 추가
+      draft.followDone = true;
+      break;
+    case FOLLOW_FAILURE:
+      draft.followLoading = false;
+      draft.followError = action.error;
+      break;
+    case UNFOLLOW_REQUEST:
+      draft.unfollowLoading = true;
+      draft.unfollowError = null;
+      draft.unfollowDone = false;
+      break;
+    case UNFOLLOW_SUCCESS:
+      draft.unfollowLoading = false;
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);  //불변성 안지킬려면 splice? !== 선택한사람만 빠짐
+      draft.unfollowDone = true;
+      break;
+    case UNFOLLOW_FAILURE:
+      draft.unfollowLoading = false;
+      draft.unfollowError = action.error;
       break;
     case ADD_POST_TO_ME:
       draft.me.Posts.unshift({ id: action.data });
