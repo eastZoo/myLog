@@ -2,12 +2,18 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import { REMOVE_POST_REQUEST } from '../reducers/post';
+import FollowButton from './FollowButton';
+
+const CardWrapper = styled.div`
+  margin-bottom: 20px;
+`;
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -31,7 +37,7 @@ const PostCard = ({ post }) => {
 
   const id = useSelector((state) => state.user.me?.id); // me?.id = optional change 연산자
   return (
-    <div style={{ maginBottom: 20 }}>
+    <CardWrapper key={post.id}>
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
@@ -58,6 +64,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        extra={<FollowButton post={post} />}
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
@@ -85,7 +92,7 @@ const PostCard = ({ post }) => {
         </div>
       )}
 
-    </div>
+    </CardWrapper>
   );
 };
 

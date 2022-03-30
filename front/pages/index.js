@@ -19,6 +19,7 @@ const Home = () => {
     });
   }, []);
 
+  //react-virtualized 사용해보기!! 무한스크롤
   useEffect(
     () => {
       if (inView && hasMorePosts && !loadPostsLoading
