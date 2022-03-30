@@ -1,16 +1,42 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import AppLayout from '../components/AppLayout';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useInView } from 'react-intersection-observer';
+
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
+import AppLayout from '../components/AppLayout';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
 
 const Home = () => {
+  const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
+  }, []);
+
+  useEffect(
+    () => {
+      if (inView && hasMorePosts && !loadPostsLoading
+          && document.documentElement.clientHeight < document.documentElement.scrollHeight) {
+        const lastId = mainPosts[mainPosts.length - 10]?.id;
+        dispatch({
+          type: LOAD_POSTS_REQUEST,
+          lastId,
+        });
+      }
+    },
+    [inView, hasMorePosts, loadPostsLoading, mainPosts],
+  );
+
   return (
     <AppLayout>
-      {me && <PostForm />}
       {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
+      <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} />
     </AppLayout>
   );
 };

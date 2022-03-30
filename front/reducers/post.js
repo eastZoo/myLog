@@ -3,73 +3,49 @@ import produce from 'immer';
 import faker from 'faker';
 // 대문자로 적힌 부분은 DB에서 주는 부분이기에 id가 다 맥여있다
 export const initialState = {
-  mainPosts: [{
-    id: 1,
-    User: {
-      id: 1,
-      nickname: '동주',
-    },
-    content: '첫 번째 게시글 #wakLog #기분조아',
-    Images: [{
-      id: shortId.generate(),
-      src: 'http://res.heraldm.com/phpwas/restmb_allidxmake.php?idx=5&simg=201810151616036915687_20181015161843_01.jpg',
-    }, {
-      id: shortId.generate(),
-      src: 'https://static.news.zumst.com/images/111/2018/10/16/b54d109aeb0341f4b92453f452f0ad0a.jpg',
-    }, {
-      id: shortId.generate(),
-      src: 'https://search.pstatic.net/common/?src=http%3A%2F%2Fcafefiles.naver.net%2FMjAyMDA0MDlfMjMz%2FMDAxNTg2NDIwMTkyNjk3.Z7hx5bPJIicGYm0AEQZhChknIEQ0R80Lr2pBkbYehDkg.2HpwzHpiG6jKxxX4fqpUdbgL9HfPGR0x48JLzvSlvlgg.GIF%2FexternalFile.gif&type=sc960_832_gif',
-    }],
-    Comments: [{
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: 'eastzoo',
-      },
-      content: '우왕 굳~',
-    }, {
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: 'wkadoo',
-      },
-      content: '기분조아~',
-    }],
-  }],
+  mainPosts: [],
   imagePaths: [],
-  postAdded: false,
+  hasMorePosts: true,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
-  addCommentLoading: false,
-  addCommentDone: false,
-  addCommentError: null,
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
 };
 
-// use faker && shortId to make dummy!!
-initialState.mainPosts = initialState.mainPosts.concat(
-  Array(20).fill().map(() => ({
+// 무한 스크롤링 , front에서 saga를 통해 구현
+export const generateDummyPost = (number) => Array(number).fill().map(() => ({
+  id: shortId.generate(),
+  User: {
     id: shortId.generate(),
+    nickname: faker.name.findName(),
+  },
+  content: faker.lorem.paragraph(),
+  Images: [{
+    src: faker.image.image(),
+  }],
+  Comments: [{
     User: {
       id: shortId.generate(),
       nickname: faker.name.findName(),
     },
-    content: faker.lorem.paragraph(),
-    Images: [{
-      src: faker.image.imageUrl(),
-    }],
-    Comments: [{
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.sentence(),
-    }],
-  })),
-);
+    content: faker.lorem.sentence(),
+  }],
+}));
+
+// use faker && shortId to make dummy!!
+// initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
+
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -117,6 +93,21 @@ const dummyPost = (data) => ({
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   // draft(state가 이름이바뀐 상태)는 불변성 상관없이 막 바꿔도 immer가 알아서 state를 알아서 불변성 지켜서 다음 스테이트로 만들어줌
   switch (action.type) {
+    case LOAD_POSTS_REQUEST:
+      draft.loadPostsLoading = true;
+      draft.loadPostsDone = false;
+      draft.loadPostsError = null;
+      break;
+    case LOAD_POSTS_SUCCESS:
+      draft.loadPostsLoading = false;
+      draft.loadPostsDone = true;
+      draft.mainPosts = action.data.concat(draft.mainPosts);
+      draft.hasMorePosts = draft.mainPosts.length < 50;
+      break;
+    case LOAD_POSTS_FAILURE:
+      draft.loadPostsLoading = false;
+      draft.loadPostsError = action.error;
+      break;
     case ADD_POST_REQUEST:
       draft.addPostLoading = true;
       draft.addPostDone = false;
