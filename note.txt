@@ -21,4 +21,14 @@ const  =  require
 front도 노드가 돌려서 웹팩이라는게 들어있어서 import export를 내부적으로 require로 바꿔주는데
 노드는 웹팩이 없음
 
+## mysql 시퀄라이즈 연결 ( docker 쓸거에요 )
+docker run -p 3306:3306 --name mylog -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=mylog -e MYSQL_USER=eastzoo -e MYSQL_PASSWORD=1234 -d mysql
+
+# npm i sequelize sequelize-cli mysql2
+mysql2 = node랑 mysql연결해주는 드라이버
+
+# npx sequelize init
+
+sequelize에서 table === models
+
 
