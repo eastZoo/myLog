@@ -8,4 +8,5 @@ router.post('/', (req, res) => { //POST /post
 router.delete('/', (req, res) => { //DELETE /post
     res.json({ id: 1 });
 });
+
 module.exports = router;

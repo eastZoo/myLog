@@ -27,8 +27,27 @@ docker run -p 3306:3306 --name mylog -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABA
 # npm i sequelize sequelize-cli mysql2
 mysql2 = node랑 mysql연결해주는 드라이버
 
+/*
+app.get -> 가져오다
+app.post -> 생성하다
+app.put -> 전체 수정( 통째로 덮어씌우는거 잘 안씀 )
+app.delete -> 제거
+app.patch -> 부분 수정(닉네임만 수정 등,,)
+app.options -> 찔러보기
+app.head -> 헤더만 가져오기(헤더/바디)
+*/
+
 # npx sequelize init
 
 sequelize에서 table === models
 
+db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
+User와 User table 관계에서 Follower, Follwing 테이블을 생성할때 외래키로 UserId 중복되니까 foreignKey: 'FollowingId' 설정
 
+db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
+테이블이 다르기때문에 외래키 이름 설정 필요 x
+PostId, UserId
+
+## 서버 실행전 npx sequelize db:create
+
+!!시퀄라이즈 생성 문법 class로 바꿈
