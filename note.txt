@@ -7,3 +7,18 @@
 #npm i shorid
 더미데이터 아이디 생성
 
+### back
+
+node는 서버가 아니다 런타임으로 js코드가 돌아갈수있게하는 것
+node자체가 서버가 아니라 노드에서 제공하는 안의 http 모듈이 서버
+
+주소창은 무조거 get
+post, delete 테스트시 postman
+
+!! 노드쪽에서는 아직 import export 잘안쓰고
+const  =  require
+
+front도 노드가 돌려서 웹팩이라는게 들어있어서 import export를 내부적으로 require로 바꿔주는데
+노드는 웹팩이 없음
+
+
