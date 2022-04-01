@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const db = require('./models');
@@ -10,6 +12,10 @@ db.sequelize.sync()
     })
     .catch(console.error);
 
+// 브라우저에서 온 요청 모두 허락
+app.use(cors({
+    origin: true,
+}));
 //front에서 보내준 데이터를 req.body 안에 넣어주는 역할!!!
 app.use(express.json());  //front에서 json형식 파일 req.body안에 넣어줌
 app.use(express.urlencoded({ extended: true})); //front에서 form submit형식 파일 req.body안에 넣어줌
