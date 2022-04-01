@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "eastzoo",
+    "password": 1234,
+    "database": "mylog",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "eastzoo",
+    "password": 1234,
+    "database": "mylog",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "eastzoo",
+    "password": 1234,
+    "database": "mylog",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
