@@ -18,14 +18,13 @@ import {
   UNFOLLOW_SUCCESS,
 } from '../reducers/user';
 
-function logInAPI() {
-  return axios.post('/api/login');
+function logInAPI(data) {
+  return axios.post('/user/login', data);
 }
 
 function* logIn(action) {
   try {
-    yield delay(1000); // 1초 로딩돌고 실행 기능
-    // const result = yield call(logInAPI, action.data);
+    const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
       data: action.data, // login request에서 들어온 데이터를 바로 SUCCESS로 보내줌
@@ -39,7 +38,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/api/logOut');
+  return axios.post('/user/logout');
 }
 
 function* logOut() {
@@ -58,7 +57,7 @@ function* logOut() {
 }
 // start signUp course #4 -> back/user.js
 function signUpAPI(data) {
-  return axios.post('http://localhost:3065/user', data); // data = { emaiil. password, nickname } from signup
+  return axios.post('/user', data); // data = { emaiil. password, nickname } from signup
 }
 // start signUp course #3 -> signUpAPI
 function* signUp(action) {
@@ -87,7 +86,7 @@ function* follow(action) {
     yield delay(1000);
     yield put({
       type: FOLLOW_SUCCESS,
-      data: action.data,  // FollowButton 16: 에서받은 data
+      data: action.data, // FollowButton 16: 에서받은 data
     });
   } catch (err) {
     console.error(err);

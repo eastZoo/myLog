@@ -6,6 +6,7 @@ import axios from 'axios';
 import postSaga from './post';
 import userSaga from './user';
 
+axios.defaults.baseURL = 'http://localhost:3065';
 // 기존 패턴 복사해서 사용가능
 
 export default function* rootSaga() {

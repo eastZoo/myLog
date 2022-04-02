@@ -4,6 +4,9 @@ const { User } = require('../models');
 
 const router = express.Router();
 
+router.post('/login', (req, res, next) => { // POST /user/login
+
+});
 // start signUp course #5
 //req <- from saga/user.js signUpAPI data
 router.post('/', async (req, res, next) => { //POST /user
