@@ -51,3 +51,19 @@ PostId, UserId
 ## 서버 실행전 npx sequelize db:create
 
 !!시퀄라이즈 생성 문법 class로 바꿈
+
+
+## npm i passport passport-local
+아이디 로그인 관리
+
+## 로그인시  session , cookie
+서버쪽에서 통째로 로그인 데이터 들고 있고 = 세션
+프론트에서 랜덤한 문자열 = 쿠키
+
+but passport에서 세션들고있으면 데이터가 엄청 커진다
+
+해결법 -> passport에서 아이디만 들고있자( 쿠키와 데이터베이스 id 매칭 )
+
+브라우저에서 쿠키 보내주면 디비로가서 데이터 복구
+나중에는 아예 세션 저장용 DB redis 사용
+

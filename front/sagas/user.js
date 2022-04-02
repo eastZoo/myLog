@@ -18,6 +18,7 @@ import {
   UNFOLLOW_SUCCESS,
 } from '../reducers/user';
 
+// start logIn course #2 -> data = req.body로 바뀜 routes/user.js  /router.post('/login'..)
 function logInAPI(data) {
   return axios.post('/user/login', data);
 }
@@ -27,7 +28,7 @@ function* logIn(action) {
     const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data, // login request에서 들어온 데이터를 바로 SUCCESS로 보내줌
+      data: result.data, // login request에서 들어온 데이터를 바로 SUCCESS로 보내줌
     });
   } catch (err) {
     yield put({
