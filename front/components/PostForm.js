@@ -15,6 +15,7 @@ const PostForm = () => {
     imageInput.current.click();
   }, [imageInput.current]);
 
+  // start Post course #1 -> reducers/post.js //addPost
   const onSubmit = useCallback(() => {
     dispatch(addPost(text));
   }, [text]);
