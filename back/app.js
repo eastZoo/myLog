@@ -34,18 +34,12 @@ app.use(session({
     resave: false,
     secret: process.env.COOKIE_SECRET,
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.get('/', (req, res) => {
     res.send('hello express')
-});
-
-
-app.get('/posts', (req, res) => {
-    res.json([
-        { id: 1, content: 'hello1'},
-        { id: 2, content: 'hello2'},
-        { id: 3, content: 'hello3'},
-    ]);
 });
 
 app.use('/post', postRouter);

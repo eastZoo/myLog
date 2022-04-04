@@ -83,11 +83,10 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { //POST /user
     }
 });
 
-router.post('/logout', isLoggedIn, (req, res) => {
+router.post('/logout', (req, res) => {
     logout();
     req.session.destroy();
     res.send('ok')
 });
-
 
 module.exports = router;
