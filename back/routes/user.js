@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { User, Post } = require('../models');
 const passport = require('passport');
-const passportHttp = require('passport-http');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const logout = require('express-passport-logout');
 
 const router = express.Router();
@@ -11,7 +11,7 @@ const router = express.Router();
 // 미들웨어 확장 passport.authenticate으로 인해 (req,res,next)쓸자리가 없어 확장 ( express 기법 중 하나 )
 // start logIn course #3 -> passport/local.js
 // start logIn course #5 callback  return -> passport/index.js serializerUser
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
             console.log(err);
@@ -49,10 +49,16 @@ router.post('/login', (req, res, next) => {
     })(req,res,next);
 });
 
-
+//회원가입
 // start signUp course #5
 //req <- from saga/user.js signUpAPI data
-router.post('/', async (req, res, next) => { //POST /user
+router.post('/', isNotLoggedIn, async (req, res, next) => { //POST /user
+    // isNotLoggedIn을 사용하는 이유 아래처럼 바로 코딩해도 되지만 코드의 중복발생 -> middlewares.js를 통한 중복처리
+    // if (!req.isAuthenticated()) {
+    //     next(); // next()에 인자가없다면 다음 미들웨어로!
+    // } else {
+    //     res.status(401).send('로그인하지 않은 사용자만 접근 가능합니다.');
+    // }
     try{
         // 중복회원 검사
         const exUser = await User.findOne({
@@ -77,7 +83,7 @@ router.post('/', async (req, res, next) => { //POST /user
     }
 });
 
-router.post('/logout', (req, res) => {
+router.post('/logout', isLoggedIn, (req, res) => {
     logout();
     req.session.destroy();
     res.send('ok')

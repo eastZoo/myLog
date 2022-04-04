@@ -39,9 +39,6 @@ app.get('/', (req, res) => {
     res.send('hello express')
 });
 
-app.get('/', (req, res) => {
-    res.send('hello api')
-});
 
 app.get('/posts', (req, res) => {
     res.json([
