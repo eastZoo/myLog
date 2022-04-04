@@ -14,11 +14,18 @@ const ErrorMessage = styled.div`
 `;
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector((state) => state.user);
+
+  // 회원 가입 페이지 로그인시 데이터 깔끔히 안남게
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me && me.id]);
 
   useEffect(() => {
     if (signUpDone) {
-      Router.replace('/');
+      Router.push('/');
     }
   }, [signUpDone]);
 

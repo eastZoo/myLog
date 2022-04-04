@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -15,10 +15,17 @@ const FormWrapper = styled(Form)`
 `;
 const LoginForm = () => {
   const dispatch = useDispatch(); // reducer 사용으로 데이터 받아오기위해해    const [id, onChangeId] = useInput('');
-  const { isLoggingIn } = useSelector((state) => state.user);
+  const { logInLoading, logInError } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
+  //로그인 실패 에러 메세지
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
+  
   // start logIn course #1 -> sagas/user.js  /logInAPI
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
@@ -38,7 +45,7 @@ const LoginForm = () => {
         <Input name="user-password" value={password} onChange={onChangePassword} type="password" required />
       </div>
       <ButtonWrapper>
-        <Button type="primary" htmlType="submit" loading={isLoggingIn}>로그인</Button>
+        <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
       </ButtonWrapper>
     </FormWrapper>

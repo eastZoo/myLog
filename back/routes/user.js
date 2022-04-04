@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { User, Post } = require('../models');
 const passport = require('passport');
+const passportHttp = require('passport-http');
+const logout = require('express-passport-logout');
 
 const router = express.Router();
 
@@ -75,10 +77,11 @@ router.post('/', async (req, res, next) => { //POST /user
     }
 });
 
-router.post('/user/logout', (req, res, next) => {
-    req.logout();
+router.post('/logout', (req, res) => {
+    logout();
     req.session.destroy();
-    res.send('ok');
-})
+    res.send('ok')
+});
+
 
 module.exports = router;

@@ -45,12 +45,12 @@ function logOutAPI() {
 
 function* logOut() {
   try {
-    yield delay(1000);
-    // const result = yield call(logOutAPI);
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOG_OUT_FAILURE,
       error: err.response.data,
