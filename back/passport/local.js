@@ -11,7 +11,7 @@ module.exports = () => {
         passwordField: 'password',  // 1. req.body에 대한 설정
     }, async (email, password, done) => {
         try{
-            const exUser = await User.findOne({ // 2. 이메일 있는지 검사
+            const user = await User.findOne({ // 2. 이메일 있는지 검사
                 where: { email }
             });
             if (!user) {    // 3. 이메일 없을 시

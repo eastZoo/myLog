@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { User } = require('../models');
+const { User, Post } = require('../models');
 const passport = require('passport');
 
 const router = express.Router();
@@ -23,7 +23,26 @@ router.post('/login', (req, res, next) => {
                 console.error(loginErr);
                 return next(loginErr);
             }
-            return res.status(200).json(user);
+            //시퀄라이즈가 다른테이블들과의 관계를 자동으로 합쳐서 보내준다 ( attributes로 원하는것만 골라올 수 도있음 )
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: user.id },
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [{
+                    model: Post,
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id'],
+                }]
+            })
+            return res.status(200).json(fullUserWithoutPassword);
         });
     })(req,res,next);
 });
@@ -55,5 +74,11 @@ router.post('/', async (req, res, next) => { //POST /user
         next(error); //status 500
     }
 });
+
+router.post('/user/logout', (req, res, next) => {
+    req.logout();
+    req.session.destroy();
+    res.send('ok');
+})
 
 module.exports = router;

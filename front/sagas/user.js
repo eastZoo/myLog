@@ -31,6 +31,7 @@ function* logIn(action) {
       data: result.data, // login request에서 들어온 데이터를 바로 SUCCESS로 보내줌
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOG_IN_FAILURE,
       error: err.response.data,
