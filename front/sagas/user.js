@@ -15,7 +15,7 @@ import {
   FOLLOW_SUCCESS,
   UNFOLLOW_FAILURE,
   UNFOLLOW_REQUEST,
-  UNFOLLOW_SUCCESS,
+  UNFOLLOW_SUCCESS, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE,
 } from '../reducers/user';
 
 // start logIn course #2 -> data = req.body로 바뀜 routes/user.js  /router.post('/login'..)
@@ -120,6 +120,26 @@ function* unfollow(action) {
   }
 }
 
+function loadMyInfoUserAPI() {
+  return axios.get('/user');
+}
+
+function* loadMyInfoUser(action) {
+  try {
+    const result = yield call(loadMyInfoUserAPI, action.data);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -140,6 +160,10 @@ function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
+function* watchLoadMyInfoUser() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfoUser);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchFollow),
@@ -147,5 +171,6 @@ export default function* userSaga() {
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
+    fork(watchLoadMyInfoUser),
   ]);
 }

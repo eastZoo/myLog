@@ -20,6 +20,9 @@ export const initialState = {
   unfollowLoading: false, // 언팔로우 시도중
   unfollowDone: false,
   unfollowError: null,
+  loadMyInfoLoading: false,  // 유저 정보 가져오기 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -50,6 +53,10 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const LOAD_MY_INFO_REQUEST = 'LOG_IN_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOG_IN_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOG_IN_FAILURE';
 
 //user reducer 상태를 바꿀 수 있는 상태를 만들고 saga post에서 건드리!
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
@@ -158,6 +165,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UNFOLLOW_FAILURE:
       draft.unfollowLoading = false;
       draft.unfollowError = action.error;
+      break;
+    case LOAD_MY_INFO_REQUEST:
+      draft.loadMyInfoLoading = true;
+      draft.loadMyInfoDone = false;
+      draft.loadMyInfoError = null;
+      break;
+    case LOAD_MY_INFO_SUCCESS:
+      draft.loadMyInfoLoading = false;
+      draft.me = action.data;
+      draft.loadMyInfoDone = true;
+      break;
+    case LOAD_MY_INFO_FAILURE:
+      draft.loadMyInfoLoading = false;
+      draft.loadMyInfoError = action.data;
       break;
     case ADD_POST_TO_ME:
       draft.me.Posts.unshift({ id: action.data });

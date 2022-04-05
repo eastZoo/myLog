@@ -7,11 +7,43 @@ const logout = require('express-passport-logout');
 
 const router = express.Router();
 
+// 새로고침시 로그인정보 매번 불러오기 ( 로그인 풀림 방지 )
+router.get('/', async (req, res, next) => {   // GET /user
+    try {
+        if (req.user) {
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: req.user.id },
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [{
+                    model: Post,
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id'],
+                }, {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id'],
+                }]
+            })
+            res.status(200).json(fullUserWithoutPassword);
+        } else {
+            res.status(200).json(null);
+        }
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 // Router이나 app에 붙는 애들이 보통 다 미들웨어이다
 // 미들웨어 확장 passport.authenticate으로 인해 (req,res,next)쓸자리가 없어 확장 ( express 기법 중 하나 )
 // start logIn course #3 -> passport/local.js
 // start logIn course #5 callback  return -> passport/index.js serializerUser
-router.post('/login', isNotLoggedIn, (req, res, next) => {
+router.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
             console.log(err);
