@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { Post } = require('../models');
+const { Post, Image, Comment, User } = require('../models');
 
 const router = express.Router();
 // start Post course #4 -> sagas/post.js addPost
@@ -11,7 +11,17 @@ router.post('/', isLoggedIn, async (req, res, next) => { //POST /post
             content: req.body.content,
             UserId: req.user.id,    // 로그인한 상황 deserializUser덕분에 id로 정보가져올 수 있음
         });
-        res.status(201).json(post);
+        const fullPost = await Post.findOne({
+            where: { id : post.id },
+            include: [{
+                model: Image,
+            }, {
+                model: Comment,
+            }, {
+                model: User,
+            }]
+        })
+        res.status(201).json(fullPost);
     } catch (error) {
         console.error(error);
         next(error);
@@ -28,7 +38,7 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { //POST /
         if (!post) {
             return res.status(403).send('존재하지 않는 게시글입니다.');
         }
-        const comment = await  Comment.create({
+        const comment = await Comment.create({
             content: req.body.content,
             PostId: req.params.postId,
             UserId: req.user.id,

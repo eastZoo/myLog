@@ -6,25 +6,25 @@ import { addPost } from '../reducers/post';
 import useInput from '../hooks/useInput';
 
 const PostForm = () => {
-  const { imagePaths, postAdded } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const [text, onChangeText, setText] = useInput('');
   const dispatch = useDispatch();
 
-  const imageInput = useRef(); // 이미지 파일 받을때
-  const onClickImageUpload = useCallback(() => {
-    imageInput.current.click();
-  }, [imageInput.current]);
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone]);
 
   // start Post course #1 -> reducers/post.js //addPost
   const onSubmit = useCallback(() => {
     dispatch(addPost(text));
   }, [text]);
 
-  useEffect(() => {
-    if (postAdded) {
-      setText('');
-    }
-  }, [postAdded]);
+  const imageInput = useRef(); // 이미지 파일 받을때
+  const onClickImageUpload = useCallback(() => {
+    imageInput.current.click();
+  }, [imageInput.current]);
 
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
