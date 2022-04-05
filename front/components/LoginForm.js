@@ -19,13 +19,13 @@ const LoginForm = () => {
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
-  //로그인 실패 에러 메세지
+  // 로그인 실패 에러 메세지
   useEffect(() => {
     if (logInError) {
       alert(logInError);
     }
   }, [logInError]);
-  
+
   // start logIn course #1 -> sagas/user.js  /logInAPI
   const onSubmitForm = useCallback(() => {
     console.log(email, password);

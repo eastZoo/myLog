@@ -24,6 +24,7 @@ passportConfig();
 // 브라우저에서 온 요청 모두 허락
 app.use(cors({
     origin: true,
+    credentials: true, //다른 도메인 간의 쿠키전달
 }));
 //front에서 보내준 데이터를 req.body 안에 넣어주는 역할!!!
 app.use(express.json());  //front에서 json형식 파일 req.body안에 넣어줌
