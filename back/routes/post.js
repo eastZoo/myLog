@@ -12,13 +12,18 @@ router.post('/', isLoggedIn, async (req, res, next) => { //POST /post
             UserId: req.user.id,    // 로그인한 상황 deserializUser덕분에 id로 정보가져올 수 있음
         });
         const fullPost = await Post.findOne({
-            where: { id : post.id },
+            where: { id: post.id },
             include: [{
                 model: Image,
             }, {
                 model: Comment,
+                include: [{
+                    model: User, // 댓글 작성자
+                    attributes: ['id', 'nickname'],
+                }],
             }, {
-                model: User,
+                model: User, // 게시글 작성자
+                attributes: ['id', 'nickname'],
             }]
         })
         res.status(201).json(fullPost);
@@ -40,10 +45,17 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { //POST /
         }
         const comment = await Comment.create({
             content: req.body.content,
-            PostId: req.params.postId,
+            PostId: parseInt(req.params.postId, 10),
             UserId: req.user.id,
         })
-        res.status(201).json(comment);
+        const fullComment = await Comment.findOne({
+            where: { id: comment.id },
+            include: [{
+                model: User,
+                attributes: ['id', 'nickname'],
+            }],
+        })
+        res.status(201).json(fullComment);
     } catch (error) {
         console.error(error);
         next(error);

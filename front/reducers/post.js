@@ -1,6 +1,5 @@
-import shortId from 'shortid';
 import produce from 'immer';
-import faker from 'faker';
+
 // 대문자로 적힌 부분은 DB에서 주는 부분이기에 id가 다 맥여있다
 export const initialState = {
   mainPosts: [],
@@ -20,28 +19,6 @@ export const initialState = {
   addCommentError: null,
 };
 
-// 무한 스크롤링 , front에서 saga를 통해 구현
-export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-  id: shortId.generate(),
-  User: {
-    id: shortId.generate(),
-    nickname: faker.name.findName(),
-  },
-  content: faker.lorem.paragraph(),
-  Images: [{
-    src: faker.image.image(),
-  }],
-  Comments: [{
-    User: {
-      id: shortId.generate(),
-      nickname: faker.name.findName(),
-    },
-    content: faker.lorem.sentence(),
-  }],
-}));
-
-// use faker && shortId to make dummy!!
-// initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';

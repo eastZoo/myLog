@@ -20,6 +20,7 @@ const Home = () => {
     });
     dispatch({
       type: LOAD_POSTS_REQUEST,
+
     });
   }, []);
 
