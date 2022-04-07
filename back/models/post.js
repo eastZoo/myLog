@@ -18,7 +18,7 @@ module.exports = class Post extends Model {
             sequelize,
         });
     }
-    static associate(db) {
+    static associate(db) {  // 시퀄라이즈가 갖다쓰라고 친절히 만들어주심 👇🏻
         db.Post.belongsTo(db.User); // post.addUser, post.getUser, post.setUser
         db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' }); // post.addHashtags
         db.Post.hasMany(db.Comment); // post.addComments, post.getComments

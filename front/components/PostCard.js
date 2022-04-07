@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import {LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST} from '../reducers/post';
 import FollowButton from './FollowButton';
 
 const CardWrapper = styled.div`
@@ -18,11 +18,27 @@ const CardWrapper = styled.div`
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
-  const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
-  const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev); // 이전 데이터를 기반으로 하트 on/off 자주씀!!!!!
-  }, []);
+  const id = useSelector((state) => state.user.me?.id); // me?.id = optional change 연산자
+
+  const onLike = useCallback(() => {
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
+  const onUnlike = useCallback(() => {
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
@@ -35,7 +51,7 @@ const PostCard = ({ post }) => {
     });
   }, []);
 
-  const id = useSelector((state) => state.user.me?.id); // me?.id = optional change 연산자
+  const liked = post.Likers.find((v) => v.id === id);
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -43,8 +59,8 @@ const PostCard = ({ post }) => {
         actions={[
           <RetweetOutlined key="retweet" />,
           liked
-            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
-            : <HeartOutlined key="heart" onClick={onToggleLike} />,
+            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnlike} />
+            : <HeartOutlined key="heart" onClick={onLike} />,
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
             key="more"
@@ -64,7 +80,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
-        //로그인 했을때만 팔로우 버튼 보이게
+        // 로그인 했을때만 팔로우 버튼 보이게
         extra={id && <FollowButton post={post} />}
       >
         <Card.Meta
@@ -106,6 +122,7 @@ PostCard.propTypes = {
     createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
+    Likers: PropTypes.arrayOf(PropTypes.object),
   }),
 };
 
