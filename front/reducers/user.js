@@ -1,4 +1,4 @@
-import produce from "immer";
+import produce from 'immer';
 
 // 비동기는 항상 REQUEST, SUCCESS, FAILURE 기억!!!
 export const initialState = {
@@ -20,7 +20,7 @@ export const initialState = {
   unfollowLoading: false, // 언팔로우 시도중
   unfollowDone: false,
   unfollowError: null,
-  loadMyInfoLoading: false,  // 유저 정보 가져오기 시도중
+  loadMyInfoLoading: false, // 유저 정보 가져오기 시도중
   loadMyInfoDone: false,
   loadMyInfoError: null,
   me: null,
@@ -58,18 +58,9 @@ export const LOAD_MY_INFO_REQUEST = 'LOG_IN_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOG_IN_FAILURE';
 
-//user reducer 상태를 바꿀 수 있는 상태를 만들고 saga post에서 건드리!
+// user reducer 상태를 바꿀 수 있는 상태를 만들고 saga post에서 건드리!
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
-
-const dummyUser = (data) => ({
-  ...data,
-  nickname: 'eastzoo',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [{ nickname: 'jini' }, { nickname: 'cocoball' }, { nickname: 'dongha' }],
-  Followers: [{ nickname: 'jini' }, { nickname: 'cocoball' }, { nickname: 'dongha' }],
-});
 
 export const loginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
@@ -131,6 +122,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.changeNicknameDone = false;
       break;
     case CHANGE_NICKNAME_SUCCESS:
+      draft.me.nickname = action.data.nickname;
       draft.changeNicknameLoading = false;
       draft.changeNicknameDone = true;
       break;
@@ -145,7 +137,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case FOLLOW_SUCCESS:
       draft.followLoading = false;
-      draft.me.Followings.push({ id: action.data });  //팔로잉 목록에 아이디 push 추가
+      draft.me.Followings.push({ id: action.data }); // 팔로잉 목록에 아이디 push 추가
       draft.followDone = true;
       break;
     case FOLLOW_FAILURE:
@@ -159,7 +151,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case UNFOLLOW_SUCCESS:
       draft.unfollowLoading = false;
-      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);  //불변성 안지킬려면 splice? !== 선택한사람만 빠짐
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data); // 불변성 안지킬려면 splice? !== 선택한사람만 빠짐
       draft.unfollowDone = true;
       break;
     case UNFOLLOW_FAILURE:

@@ -15,7 +15,13 @@ import {
   FOLLOW_SUCCESS,
   UNFOLLOW_FAILURE,
   UNFOLLOW_REQUEST,
-  UNFOLLOW_SUCCESS, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE,
+  UNFOLLOW_SUCCESS,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
+  CHANGE_NICKNAME_SUCCESS,
+  CHANGE_NICKNAME_FAILURE,
+  CHANGE_NICKNAME_REQUEST,
 } from '../reducers/user';
 
 // start logIn course #2 -> data = req.body로 바뀜 routes/user.js  /router.post('/login'..)
@@ -140,6 +146,26 @@ function* loadMyInfoUser(action) {
   }
 }
 
+function changeNicknameAPI(data) {
+  return axios.patch('/user/nickname', { nickname: data });
+}
+
+function* changeNickname(action) {
+  try {
+    const result = yield call(changeNicknameAPI, action.data);
+    yield put({
+      type: CHANGE_NICKNAME_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: CHANGE_NICKNAME_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -164,9 +190,14 @@ function* watchLoadMyInfoUser() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfoUser);
 }
 
+function* watchChangeNickname() {
+  yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchFollow),
+    fork(watchChangeNickname),
     fork(watchUnfollow),
     fork(watchLogIn),
     fork(watchLogOut),

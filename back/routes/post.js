@@ -94,8 +94,21 @@ router.delete('/:postId/like', async (req, res, next) => { // DELETE /post/1/lik
     }
 });
 
-router.delete('/', (req, res) => { //DELETE /post
-    res.json({ id: 1 });
+// 게시글 제거
+router.delete('/:postId', async (req, res, next) => { //DELETE /post
+    try {
+        await Post.destroy({
+            where: {
+                id: req.params.postId,
+                UserId: req.user.id,
+            },
+        });
+        // 처음에 params로 문자열로 아이디를 보내줘서 에러! int로 변환후 보내자
+        res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
 });
 
 module.exports = router;

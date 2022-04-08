@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
-import {LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST} from '../reducers/post';
+import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
 import FollowButton from './FollowButton';
 
 const CardWrapper = styled.div`
@@ -44,6 +44,7 @@ const PostCard = ({ post }) => {
     setCommentFormOpened((prev) => !prev);
   }, []);
 
+  // -> sagas/post removePost
   const onRemovePost = useCallback(() => {
     dispatch({
       type: REMOVE_POST_REQUEST,
