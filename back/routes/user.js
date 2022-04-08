@@ -136,5 +136,34 @@ router.patch('/nickname', async (req, res, next) => {
     }
 });
 
+router.patch('/:userId/follow', async (req, res, next) => { // PATCH /user/1/follow
+    try {
+        const user = await User.findOne({ where: { id: req.params.userId }});
+        if (!user) {
+            res.status(403).send('존재하지 않는 사용자입니다.');
+        }
+        await user.addFollowers(req.user.id);
+        // 이부분이 action.data가 된다는점 명심!!
+        res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+router.delete('/:userId/follow', async (req, res, next) => { // DELETE /user/1/follow
+    try {
+        const user = await User.findOne({ where: { id: req.params.userId }});
+        if (!user) {
+            res.status(403).send('없는 사람을 언팔로우하려고 하시네요?');
+        }
+        await user.removeFollowers(req.user.id);
+        // 이부분이 action.data가 된다는점 명심!!
+        res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
 
 module.exports = router;

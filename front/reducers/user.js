@@ -137,7 +137,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case FOLLOW_SUCCESS:
       draft.followLoading = false;
-      draft.me.Followings.push({ id: action.data }); // 팔로잉 목록에 아이디 push 추가
+      draft.me.Followings.push({ id: action.data.UserId }); // 팔로잉 목록에 아이디 push 추가
       draft.followDone = true;
       break;
     case FOLLOW_FAILURE:
@@ -151,7 +151,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case UNFOLLOW_SUCCESS:
       draft.unfollowLoading = false;
-      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data); // 불변성 안지킬려면 splice? !== 선택한사람만 빠짐
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data.UserId); // 불변성 안지킬려면 splice? !== 선택한사람만 빠짐
       draft.unfollowDone = true;
       break;
     case UNFOLLOW_FAILURE:
