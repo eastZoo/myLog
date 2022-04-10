@@ -1,9 +1,21 @@
 const express = require('express');
+// multer는 app.js에 장착할 수 도있지만 보통 route에 장착 form마다 데이터 형식이나 타입들이 다르기때문에(app은모든 라우터 공통)
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { Post, Image, Comment, User } = require('../models');
 
 const router = express.Router();
+
+try {
+    fs.accessSync('uploads');
+} catch (error) {
+    console.log('uploads 폴더가 없으므로 생성합니다.');
+    fs.mkdirSync('uploads');
+}
+
 // start Post course #4 -> sagas/post.js addPost
 router.post('/', isLoggedIn, async (req, res, next) => { //POST /post
     try {
@@ -109,6 +121,26 @@ router.delete('/:postId', async (req, res, next) => { //DELETE /post
         console.log(error);
         next(error);
     }
+});
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+        filename(req, file, done) { // 제로초.png
+            const ext = path.extname(file.originalname); // 확장자 추출(.png)
+            const basename = path.basename(file.originalname, ext); // eastzoo
+            done(null, basename + '_' + new Date().getTime() + ext); // eastzoo15184712891.png / 날짜를 추가해서 저장함으로써 파일이름 같아도 구별
+        },
+    }),
+    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
+// 한장만 올릴거면 upload.single
+router.post('/images', upload.array('image'), async (req, res, next) => {  //Post /images
+    console.log(req.files);
+    res.json(req.files.map((v) => v.filename));
 });
 
 module.exports = router;
