@@ -27,7 +27,7 @@ import {
 } from '../reducers/post';
 
 function addPostAPI(data) {
-  return axios.post('/post', { content: data }); // req.body.content로 변환
+  return axios.post('/post', data); // req.body.content로 변환 / formData는 중괄호x, 바로data로
 }
 
 // start Post course #5 -> reduxers/post.js type

@@ -2,7 +2,7 @@ import React, { useRef, useCallback, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {addPost, REMOVE_IMAGE, UPLOAD_IMAGES_REQUEST} from '../reducers/post';
+import { ADD_POST_REQUEST, REMOVE_IMAGE, UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
 
 const PostForm = () => {
@@ -18,8 +18,24 @@ const PostForm = () => {
 
   // start Post course #1 -> reducers/post.js //addPost
   const onSubmit = useCallback(() => {
-    dispatch(addPost(text));
-  }, [text]);
+    // 게시글 작성안하고 짹짹눌렀을때 경고
+    if (!text || !text.trim()) {
+      return alert('게시글을 작성하세요.');
+    }
+    const formData = new FormData();
+    imagePaths.forEach((p) => {
+      formData.append('image', p); // req.body.image
+    });
+    formData.append('content', text); // req.body.content
+    return dispatch({
+      type: ADD_POST_REQUEST,
+      data: formData,
+      // data: {  이런식으로 json으로 보내도 가능, 굳이 이미지 없으면 formData 비효율
+      //   imagePaths,
+      //   content: text,
+      // }
+    });
+  }, [text, imagePaths]);
 
   const imageInput = useRef(); // 이미지 파일 받을때
   const onClickImageUpload = useCallback(() => {
@@ -55,12 +71,12 @@ const PostForm = () => {
       </div>
       <div>
         {imagePaths.map((v, i) => (
-            <div key={v} style={{ display: 'inline-block' }}>
-              <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
-              <div>
-                <Button onClick={onRemoveImage(i)}>제거</Button>
-              </div>
+          <div key={v} style={{ display: 'inline-block' }}>
+            <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
+            <div>
+              <Button onClick={onRemoveImage(i)}>제거</Button>
             </div>
+          </div>
         ))}
       </div>
     </Form>

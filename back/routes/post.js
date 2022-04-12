@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { Post, Image, Comment, User } = require('../models');
+const { Post, Image, Comment, User, Hashtag } = require('../models');
 
 const router = express.Router();
 
@@ -16,13 +16,43 @@ try {
     fs.mkdirSync('uploads');
 }
 
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+        filename(req, file, done) { // 제로초.png
+            const ext = path.extname(file.originalname); // 확장자 추출(.png)
+            const basename = path.basename(file.originalname, ext); // eastzoo
+            done(null, basename + '_' + new Date().getTime() + ext); // eastzoo15184712891.png / 날짜를 추가해서 저장함으로써 파일이름 같아도 구별
+        },
+    }),
+    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
 // start Post course #4 -> sagas/post.js addPost
-router.post('/', isLoggedIn, async (req, res, next) => { //POST /post
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { //POST /post
     try {
+        const hashtags = req.body.content.match(/#[^\s#]+/g);
         const post = await Post.create({
             content: req.body.content,
             UserId: req.user.id,    // 로그인한 상황 deserializUser덕분에 id로 정보가져올 수 있음
         });
+        if (hashtags) {
+            const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+                where: { name: tag.slice(1).toLowerCase() },
+            }))); // result의 결과물 -> [[노드, true], [리액트, true]]
+            await post.addHashtags(result.map((v) => v[0])); // 위배열에서 결과물만 추출 [0]
+        }
+        if (req.body.image) {
+            if (Array.isArray(req.body.image)) { // 이미지를 여러 개 올리면 image: [east.png, zoo.png]
+                const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
+                await post.addImages(images);
+            } else { // 이미지를 하나만 올리면 image: eastzoo.png 배열 ㄴㄴ
+                const image = await Image.create({ src: req.body.image });
+                await post.addImages(image);
+            }
+        }
         const fullPost = await Post.findOne({
             where: { id: post.id },
             include: [{
@@ -47,6 +77,12 @@ router.post('/', isLoggedIn, async (req, res, next) => { //POST /post
         console.error(error);
         next(error);
     }
+});
+
+// 한장만 올릴거면 upload.single
+router.post('/images', upload.array('image'), async (req, res, next) => {  //Post /images
+    console.log(req.files);
+    res.json(req.files.map((v) => v.filename));
 });
 
 // 댓글 달기
@@ -121,26 +157,6 @@ router.delete('/:postId', async (req, res, next) => { //DELETE /post
         console.log(error);
         next(error);
     }
-});
-
-const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-        filename(req, file, done) { // 제로초.png
-            const ext = path.extname(file.originalname); // 확장자 추출(.png)
-            const basename = path.basename(file.originalname, ext); // eastzoo
-            done(null, basename + '_' + new Date().getTime() + ext); // eastzoo15184712891.png / 날짜를 추가해서 저장함으로써 파일이름 같아도 구별
-        },
-    }),
-    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
-});
-
-// 한장만 올릴거면 upload.single
-router.post('/images', upload.array('image'), async (req, res, next) => {  //Post /images
-    console.log(req.files);
-    res.json(req.files.map((v) => v.filename));
 });
 
 module.exports = router;
