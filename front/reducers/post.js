@@ -56,6 +56,8 @@ export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+
 // start Post course #2 -> sagas/post.js //addPost
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -187,6 +189,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UPLOAD_IMAGES_FAILURE:
       draft.uploadImagesLoading = false;
       draft.uploadImagesError = action.error;
+      break;
+    case REMOVE_IMAGE:
+      draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
       break;
     default:
       break;

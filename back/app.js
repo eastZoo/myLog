@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 const postsRouter = require('./routes/posts');
 const postRouter = require('./routes/post');
@@ -29,6 +30,10 @@ app.use(cors({
     origin: true,
     credentials: true, //다른 도메인 간의 쿠키전달
 }));
+
+//static 미들웨어 설정
+app.use('/', express.static(path.join(__dirname, 'uploads')));
+
 //front에서 보내준 데이터를 req.body 안에 넣어주는 역할!!!
 app.use(express.json());  //front에서 json형식 파일 req.body안에 넣어줌
 app.use(express.urlencoded({ extended: true})); //front에서 form submit형식 파일 req.body안에 넣어줌
