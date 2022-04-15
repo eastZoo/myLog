@@ -82,3 +82,6 @@ Next-Redux Wrapper 에서 제공하는 메서드로 구현하는게 나음
 
 getStaticProps : 언제 접속해도 바뀔리 없는 데이터일때( 블로그 계시글처럼 잘 바뀌지 않는 얘들 ), NEXT 빌드시 HTML과 같은 정적인 파일로 뽑아줌!!
 getServerSideProps : 접속하는 상황에따라 화면이 바껴야하면 < -- 거의 이거만 씀
+
+### 다이나믹 라우팅( NEXT 9 ~ )
+
