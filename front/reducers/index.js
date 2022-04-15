@@ -13,18 +13,19 @@ const initialState = {
 
 // ( 이전상태, 액션 ) => 다음상태 reducer의 역할
 // combineReducers가 알아서 user initial, post initial 가져와줌 !!!
-const rootReducer = combineReducers({
-  index: (state = {}, action) => { // SSR을 위한 HTDRATE 삽입
-    switch (action.type) {
-      case HYDRATE:
-        console.log('HYDRATE', action);
-        return { ...state, ...action.payload };
-      default:
-        return state;
+const rootReducer = (state, action) => {
+  switch (action.type) {
+    case HYDRATE:
+      console.log('HYDRATE', action);
+      return action.payload;
+    default: {
+      const combinedReducer = combineReducers({
+        user,
+        post,
+      });
+      return combinedReducer(state, action);
     }
-  },
-  user,
-  post,
-});
+  }
+};
 
 export default rootReducer;

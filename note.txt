@@ -75,3 +75,8 @@ but passport에서 세션들고있으면 데이터가 엄청 커진다
 해결법
 -> 프록시 or CORS모듈 참고
 
+
+# SSR Start!!
+next에서 SSR렌더링 메서드를 4가지 제공하지만 Redux와 같이 사용할 때 문제가 있기에
+Next-Redux Wrapper 에서 제공하는 메서드로 구현하는게 나음
+

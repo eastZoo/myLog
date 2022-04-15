@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 
 import wrapper from '../store/configureStore';
 
-const App = ({ Component }) => (
+const Mylog = ({ Component }) => (
   <>
     <Head>
       <meta charSet="utf-8" />
@@ -15,8 +15,8 @@ const App = ({ Component }) => (
   </>
 );
 
-App.propTypes = {
+Mylog.propTypes = {
   Component: PropTypes.elementType.isRequired,
 };
 
-export default wrapper.withRedux(App);
+export default wrapper.withRedux(Mylog);
