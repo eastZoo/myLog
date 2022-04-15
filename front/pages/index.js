@@ -58,9 +58,15 @@ const Home = () => {
   );
 };
 
+// 이부분은 프로트서버 -> 백엔드로 넘어가기때문에 브라우저 개입조차 못함, 쿠키 크리덴셜 문제발생!
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
   console.log('getServerSideProps start');
   console.log(context.req.headers);
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = ''; // 누군가 쿠키 안써서 요청할때 서버에서 공유중인 쿠키 제거
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie; // 쿠키를 가지고 요청을 보낼때만 쿠키를 넣어주고
+  }
   context.store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
   });
