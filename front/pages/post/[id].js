@@ -14,9 +14,23 @@ import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 const Post = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { singlePost } = useSelector((state) => state.post);
 
   return (
-    <div>{id}번 게시글</div>
+      <AppLayout>
+        <Head>
+          <title>
+            {singlePost.User.nickname}
+            님의 글
+          </title>
+          <meta name="description" content={`${singlePost.content}님의 게시글`} />
+          <meta property="og:title" content={`${singlePost.User.nickname}님의 게시글`} />
+          <meta property="og:description" content={`${singlePost.User.content}님의 게시글`} />
+          <meta property="og:image" content="https://nodebird.com/favicon.ico" />
+          <meta property="og:url" content={`https://nodebird.com/user/${id}`} />
+        </Head>
+        <PostCard post={singlePost} />
+      </AppLayout>
   );
 };
 
