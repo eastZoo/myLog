@@ -15,9 +15,14 @@ import AppLayout from '../../components/AppLayout';
 const User = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { id } = router.query;  // 특정사용자 id 받는부분
+  const { id } = router.query; // 특정사용자 id 받는부분
   const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
   const { userInfo } = useSelector((state) => state.user);
+
+  // CSR할 수 있게 기다려주는 역할 / getStaticPaths fallback true인데 paths에 요청된경로가x -> getServerSideProps실행 후 불러옴
+  // if (router.isFallback) {
+  //   return <div>로딩중...</div>;
+  // }
 
   useEffect(() => {
     const onScroll = () => {
@@ -85,7 +90,18 @@ const User = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+// export async function getStaticPaths() {
+//   return {
+//     paths: [
+//       { params: { id: '1' } },
+//       { params: { id: '2' } },
+//       { params: { id: '3' } },
+//     ],
+//     fallback: true,
+//   };
+// }
+
+export const getServerSideProps = wrapper.getStaticProps(async (context) => {
   const cookie = context.req ? context.req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';
   if (context.req && cookie) {
