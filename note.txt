@@ -106,3 +106,7 @@ npm i babel-plugin-styled-components
 }
 
 displayname : dev mode에서 <form class="ant-form ant-form-horizontal sc-kDTinF fJycNs">와 같은 외계어들 컴포넌트 이름으로 바꿔줌!
+
+
+# SWR 패키지 ( 서버사이드 렌더링 가능 )
+

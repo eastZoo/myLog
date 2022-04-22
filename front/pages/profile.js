@@ -3,18 +3,33 @@ import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import axios from 'axios';
+import useSWR from 'swr';
 
 import Router from 'next/router';
 import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
 import wrapper from '../store/configureStore';
-import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
+
+const fetcher = (url) => axios.get(url, { withCredentials: true}).then((result) => result.data);
 
 const Profile = () => {
   const dispatch = useDispatch();
 
   const { me } = useSelector((state) => state.user);
+
+  const { data, error } = useSWR('http://localhost:3000/user/followers', fetcher);
+  const { data, error } = useSWR('http://localhost:3000/user/followings', fetcher);
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_FOLLOWERS_REQUEST,
+    });
+    dispatch({
+      type: LOAD_FOLLOWINGS_REQUEST,
+    });
+  }, []);
 
   useEffect(() => {
     if (!(me && me.id)) {
