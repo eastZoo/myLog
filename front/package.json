@@ -15,6 +15,7 @@
     "babel-plugin-styled-components": "^2.0.7",
     "immer": "^9.0.12",
     "list": "^2.0.19",
+    "moment": "^2.29.3",
     "next": "^12.0.8",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.8.1",
