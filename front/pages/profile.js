@@ -1,35 +1,23 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import Router from 'next/router';
 import { END } from 'redux-saga';
 import axios from 'axios';
 import useSWR from 'swr';
 
-import Router from 'next/router';
 import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
-import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
-const fetcher = (url) => axios.get(url, { withCredentials: true}).then((result) => result.data);
+const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data);
 
 const Profile = () => {
-  const dispatch = useDispatch();
-
+  const { data: followingsData, error: followingError } = useSWR(`http://localhost:3065/user/followings`, fetcher);
+  const { data: followersData, error: followerError } = useSWR(`http://localhost:3065/user/followers`, fetcher);
   const { me } = useSelector((state) => state.user);
-
-  const { data, error } = useSWR('http://localhost:3000/user/followers', fetcher);
-  const { data, error } = useSWR('http://localhost:3000/user/followings', fetcher);
-
-  useEffect(() => {
-    dispatch({
-      type: LOAD_FOLLOWERS_REQUEST,
-    });
-    dispatch({
-      type: LOAD_FOLLOWINGS_REQUEST,
-    });
-  }, []);
 
   useEffect(() => {
     if (!(me && me.id)) {
@@ -38,26 +26,24 @@ const Profile = () => {
   }, [me && me.id]);
 
   if (!me) {
-    return null;
+    return '내 정보 로딩중...';
+  }
+
+  if (followerError || followingError) {
+    console.error(followerError || followingError);
+    return '팔로잉/팔로워 로딩 중 에러가 발생했습니다.';
   }
 
   return (
     <>
       <Head>
-        <title>프로필 | WakLog</title>
+        <title>내 프로필 | NodeBird</title>
       </Head>
       <AppLayout>
         <NicknameEditForm />
-        <FollowList
-          header="팔로잉 목록"
-          data={me.Followings}
-        />
-        <FollowList
-          header="팔로워 목록"
-          data={me.Followers}
-        />
+        <FollowList header="팔로잉" data={followingsData} />
+        <FollowList header="팔로워" data={followersData} />
       </AppLayout>
-
     </>
   );
 };
