@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useSelector } from 'react-redux';
+import Router from 'next/router';
 
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
+import useInput from '../hooks/useInput';
 
 const Global = createGlobalStyle`
   .ant-row {
@@ -32,6 +34,12 @@ const AppLayout = ({ children }) => {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   // reducer, index로 인한 중앙관리로 컴포넌트별 데이터관리 불필요
   const { me } = useSelector((state) => state.user);
+  const [searchInput, onChangeSearchInput] = useInput('');
+
+  // 검색시 그페이지로 이동하느 로직 Router 적용, 다이나믹 라우팅 때 검색처럼?
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
 
   return (
     <div>
@@ -45,7 +53,13 @@ const AppLayout = ({ children }) => {
         </Menu.Item>
         <Menu.Item key="mail">
           {/* ezslint-disable-next-line react/jsx-no-undef */}
-          <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
+          <SearchInput
+            enterButton
+            style={{ verticalAlign: 'middle' }}
+            value={searchInput}
+            onChange={onChangeSearchInput}
+            onSearch={onSearch}
+          />
         </Menu.Item>
         <Menu.Item>
           <Link href="/signup"><a>회원가입</a></Link>
