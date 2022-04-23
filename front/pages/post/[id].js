@@ -17,20 +17,20 @@ const Post = () => {
   const { singlePost } = useSelector((state) => state.post);
 
   return (
-      <AppLayout>
-        <Head>
-          <title>
-            {singlePost.User.nickname}
-            님의 글
-          </title>
-          <meta name="description" content={`${singlePost.content}님의 게시글`} />
-          <meta property="og:title" content={`${singlePost.User.nickname}님의 게시글`} />
-          <meta property="og:description" content={`${singlePost.User.content}님의 게시글`} />
-          <meta property="og:image" content="https://nodebird.com/favicon.ico" />
-          <meta property="og:url" content={`https://nodebird.com/user/${id}`} />
-        </Head>
-        <PostCard post={singlePost} />
-      </AppLayout>
+    <AppLayout>
+      <Head>
+        <title>
+          {singlePost.User.nickname}
+          님의 글
+        </title>
+        <meta name="description" content={`${singlePost.content}님의 게시글`} />
+        <meta property="og:title" content={`${singlePost.User.nickname}님의 게시글`} />
+        <meta property="og:description" content={`${singlePost.User.content}님의 게시글`} />
+        <meta property="og:image" content="https://nodebird.com/favicon.ico" />
+        <meta property="og:url" content={`https://nodebird.com/user/${id}`} />
+      </Head>
+      <PostCard post={singlePost} />
+    </AppLayout>
   );
 };
 

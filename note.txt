@@ -113,3 +113,9 @@ displayname : dev mode에서 <form class="ant-form ant-form-horizontal sc-kDTinF
 
 # moment, dayjs, date-gns 시간 라이브러리
 - moment 와 dayjs 매우 유사
+
+# NEXT build
+- "build": "next build",
+-> if code change -> github auto push
+cicd라는 도구가 코드에대한 테스트 , 빌드해줌, 알림도줌 ,aws서버 배포도 해줌
+1mb 안넘으면 괜찮음 ( 모바일에서 렉거림 )

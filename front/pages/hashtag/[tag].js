@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
@@ -18,7 +18,8 @@ const Hashtag = () => {
 
   useEffect(() => {
     const onScroll = () => {
-      if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+      if (window.scrollY + document.documentElement.clientHeight
+          > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({
             type: LOAD_HASHTAG_POSTS_REQUEST,

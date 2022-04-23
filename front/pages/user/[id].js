@@ -19,14 +19,16 @@ const User = () => {
   const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
   const { userInfo } = useSelector((state) => state.user);
 
-  // CSR할 수 있게 기다려주는 역할 / getStaticPaths fallback true인데 paths에 요청된경로가x -> getServerSideProps실행 후 불러옴
+  // CSR할 수 있게 기다려주는 역할 / getStaticPaths fallback true인데 paths에 요청된경로가x ->
+  // getServerSideProps실행 후 불러옴
   // if (router.isFallback) {
   //   return <div>로딩중...</div>;
   // }
 
   useEffect(() => {
     const onScroll = () => {
-      if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+      if (window.scrollY + document.documentElement.clientHeight
+          > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({
             type: LOAD_USER_POSTS_REQUEST,

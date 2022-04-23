@@ -56,7 +56,7 @@ export const getStaticProps = wrapper.getStaticProps(async (context) => {
     data: 1,
   });
   context.store.dispatch(END);
-  await context.store.sagaTask.toPromise();  // 사용방법 이니까 외우기
+  await context.store.sagaTask.toPromise(); // 사용방법 이니까 외우기
 });
 
 export default About;

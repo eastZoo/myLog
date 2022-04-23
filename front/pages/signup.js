@@ -57,6 +57,7 @@ const Signup = () => {
   }, []);
 
   // start signUp course #1 -> saga/user /fn watchSignUp
+  // eslint-disable-next-line consistent-return
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       return setPasswordError(true);

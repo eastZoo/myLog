@@ -14,6 +14,7 @@ const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 const LoginForm = () => {
+  // eslint-disable-next-line max-len
   const dispatch = useDispatch(); // reducer 사용으로 데이터 받아오기위해해    const [id, onChangeId] = useInput('');
   const { logInLoading, logInError } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput('');

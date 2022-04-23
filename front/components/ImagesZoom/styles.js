@@ -1,5 +1,5 @@
-import styled, {createGlobalStyle} from "styled-components";
-import {CloseOutlined} from "@ant-design/icons";
+import styled, { createGlobalStyle } from 'styled-components';
+import { CloseOutlined } from '@ant-design/icons';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -54,7 +54,7 @@ export const Header = styled.header`
 export const SlickWrapper = styled.div`
   height: calc(100% - 44px);
   background: #090909;
-`
+`;
 
 export const CloseBtn = styled(CloseOutlined)`
     position: absolute;

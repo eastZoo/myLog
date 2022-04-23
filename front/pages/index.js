@@ -14,6 +14,7 @@ import wrapper from '../store/configureStore';
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+  // eslint-disable-next-line max-len
   const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector((state) => state.post);
   const [ref, inView] = useInView();
 
