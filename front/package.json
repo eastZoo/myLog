@@ -5,15 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "next -p 3000",
-    "build": "next build"
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
   },
   "author": "eastzoo",
   "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@next/bundle-analyzer": "^12.1.5",
     "antd": "^4.18.3",
     "axios": "^0.26.1",
     "babel-plugin-styled-components": "^2.0.7",
+    "cross-env": "^7.0.3",
     "immer": "^9.0.12",
     "list": "^2.0.19",
     "moment": "^2.29.3",

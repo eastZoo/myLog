@@ -27,7 +27,7 @@ const PostCard = ({ post }) => {
 
   const onLike = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return alert('로그인이 필요합니다.'); // eslint-disable-line no-alert
     }
     return dispatch({
       type: LIKE_POST_REQUEST,
@@ -36,7 +36,7 @@ const PostCard = ({ post }) => {
   }, [id]);
   const onUnlike = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return alert('로그인이 필요합니다.'); // eslint-disable-line no-alert
     }
     return dispatch({
       type: UNLIKE_POST_REQUEST,
@@ -51,7 +51,7 @@ const PostCard = ({ post }) => {
   // -> sagas/post removePost
   const onRemovePost = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return alert('로그인이 필요합니다.'); // eslint-disable-line no-alert
     }
     return dispatch({
       type: REMOVE_POST_REQUEST,
@@ -61,7 +61,7 @@ const PostCard = ({ post }) => {
 
   const onRetweet = useCallback(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return alert('로그인이 필요합니다.'); // eslint-disable-line no-alert
     }
     return dispatch({
       type: RETWEET_REQUEST,

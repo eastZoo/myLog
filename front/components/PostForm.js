@@ -20,7 +20,7 @@ const PostForm = () => {
   const onSubmit = useCallback(() => {
     // 게시글 작성안하고 짹짹눌렀을때 경고
     if (!text || !text.trim()) {
-      return alert('게시글을 작성하세요.');
+      return alert('게시글을 작성하세요.'); // eslint-disable-line no-alert
     }
     const formData = new FormData();
     imagePaths.forEach((p) => {

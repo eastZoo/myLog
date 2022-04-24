@@ -119,3 +119,21 @@ displayname : dev mode에서 <form class="ant-form ant-form-horizontal sc-kDTinF
 -> if code change -> github auto push
 cicd라는 도구가 코드에대한 테스트 , 빌드해줌, 알림도줌 ,aws서버 배포도 해줌
 1mb 안넘으면 괜찮음 ( 모바일에서 렉거림 )
+
+next run build
+λ  (Server)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
+○  (Static)  automatically rendered as static HTML (uses no initial props)
+●  (SSG)     automatically generated as static HTML + JSON (uses getStaticProps)
+
+npm i @next/bundle-analyzer
+
+## 커스텁 웹팩 설정
+웹팩은 next기본설정이 있기때문에 config(...config) 통해서 기본설정을 바꾸는 형식으로 제작
+
+npm i cross-env
+next 웹팩 설정후 빌드시
+맥에서만 돌아가는 "build": "ANALYZE=true NODE_ENV=production next build", 명령어를 윈도우에서 돌리기위해
+"build": "cross-env ANALYZE=true NODE_ENV=production next build",
+
+빌드하면
+server.html, client.html 뜨는데 client가 고객의 입장에서 보이는 곳이기 때문에 용량잘봐야한다

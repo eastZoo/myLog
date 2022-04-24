@@ -23,7 +23,7 @@ const LoginForm = () => {
   // 로그인 실패 에러 메세지
   useEffect(() => {
     if (logInError) {
-      alert(logInError);
+      alert(logInError); // eslint-disable-line no-alert
     }
   }, [logInError]);
 
