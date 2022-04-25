@@ -1,4 +1,4 @@
-import produce from 'immer';
+import produce from '../util/produce';
 
 // 비동기는 항상 REQUEST, SUCCESS, FAILURE 기억!!!
 export const initialState = {

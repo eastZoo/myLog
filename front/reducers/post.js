@@ -1,4 +1,4 @@
-import produce from 'immer';
+import produce from '../util/produce';
 
 // 대문자로 적힌 부분은 DB에서 주는 부분이기에 id가 다 맥여있다
 export const initialState = {

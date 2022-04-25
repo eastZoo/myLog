@@ -127,7 +127,7 @@ next run build
 
 npm i @next/bundle-analyzer
 
-## 커스텁 웹팩 설정
+## 커스텁 웹팩 설정 ( 웹팩 옵티마이제이션 )
 웹팩은 next기본설정이 있기때문에 config(...config) 통해서 기본설정을 바꾸는 형식으로 제작
 
 npm i cross-env
@@ -137,3 +137,6 @@ next 웹팩 설정후 빌드시
 
 빌드하면
 server.html, client.html 뜨는데 client가 고객의 입장에서 보이는 곳이기 때문에 용량잘봐야한다
+
+# aws EC2 연결
+https://wookim789.tistory.com/34
