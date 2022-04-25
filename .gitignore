@@ -4,10 +4,12 @@ node_modules
 .next
 
 # IntelliJ project files
-.idea
+/.idea
 .idea/*.xml
 *.iml
 out
 gen
 build
 rebel.xml
+
+/note.txt
