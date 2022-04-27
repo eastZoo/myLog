@@ -6,6 +6,8 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const postsRouter = require('./routes/posts');
 const postRouter = require('./routes/post');
@@ -25,10 +27,16 @@ db.sequelize.sync()
 
 passportConfig();
 
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+    app.use(morgan('combined')); //combined 사용시 로그 자세해짐, ip같은것들
+    app.use(hpp()); // 꼭넣어주자, 보안도움
+    app.use(helmet()); // 꼭넣어주자, 보안도움
+} else {
+    app.use(morgan('dev'));
+}
 // 브라우저에서 온 요청 모두 허락
 app.use(cors({
-    origin: true,
+    origin:[true, 'http://localhost:3000','mylog.com'],
     credentials: true, //다른 도메인 간의 쿠키전달
 }));
 
