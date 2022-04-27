@@ -5,8 +5,9 @@ import axios from 'axios';
 
 import postSaga from './post';
 import userSaga from './user';
+import { backUrl } from '../config/config';
 
-axios.defaults.baseURL = 'http://localhost:3065';
+axios.defaults.baseURL = backUrl; // aws back서버에 ip주소로 변경
 // 기존 패턴 복사해서 사용가능
 axios.defaults.withCredentials = true; // sagas에서 보내는 axios요청들에는 전부 공통적으로 적용된다!
 
