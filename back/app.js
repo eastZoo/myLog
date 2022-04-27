@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // 브라우저에서 온 요청 모두 허락
 app.use(cors({
-    origin: ['http://localhost:3000', 'mylog.com', 'http://3.34.4.147'],
+    origin: ['http://localhost:3000', 'eastzoo.co.kr'],
     credentials: true, //다른 도메인 간의 쿠키전달
 }));
 
@@ -52,6 +52,11 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        domain: process.env.NODE_ENV === 'production' && '.eastzoo.co.kr'
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

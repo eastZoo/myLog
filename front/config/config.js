@@ -1,1 +1,1 @@
-export const backUrl = "http://13.125.247.15";
+export const backUrl = "http://api.eastzoo.co.kr";
