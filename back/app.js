@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // 브라우저에서 온 요청 모두 허락
 app.use(cors({
-    origin: ['http://localhost:3000', 'mylog.com', 'http://3.36.74.157'],
+    origin: ['http://localhost:3000', 'mylog.com', 'http://3.34.4.147'],
     credentials: true, //다른 도메인 간의 쿠키전달
 }));
 
