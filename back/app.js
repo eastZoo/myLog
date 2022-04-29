@@ -28,13 +28,20 @@ db.sequelize.sync()
 passportConfig();
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(morgan('combined')); //combined 사용시 로그 자세해짐, ip같은것들
-    app.use(hpp()); // 꼭넣어주자, 보안도움
-    app.use(helmet()); // 꼭넣어주자, 보안도움
+    app.use(morgan('combined'));
+    app.use(hpp());
+    app.use(helmet({ contentSecurityPolicy: false }));
+    app.use(cors({
+        origin: 'http://eastzoo.co.kr',
+        credentials: true,
+    }));
 } else {
     app.use(morgan('dev'));
+    app.use(cors({
+        origin: true,
+        credentials: true,
+    }));
 }
-
 // 브라우저에서 온 요청 모두 허락
 app.use(cors({
     origin: ['http://localhost:3000', 'eastzoo.co.kr'],
