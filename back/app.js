@@ -30,7 +30,7 @@ passportConfig();
 if (process.env.NODE_ENV === 'production') {
     app.use(morgan('combined'));
     app.use(hpp());
-    app.use(helmet({ contentSecurityPolicy: false }));
+    app.use(helmet());
     app.use(cors({
         origin: 'http://eastzoo.co.kr',
         credentials: true,
