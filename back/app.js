@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
     app.use(hpp());
     app.use(helmet());
     app.use(cors({
-        origin: 'http://eastzoo.co.kr',
+        origin: true,
         credentials: true,
     }));
 } else {
@@ -78,6 +78,6 @@ app.use('/post', postRouter);
 app.use('/user', userRouter);
 app.use('/hashtag', hashtagRouter);
 
-app.listen(80, () => {
+app.listen(3065, () => {
     console.log('서버 실행 중!!');
 });
