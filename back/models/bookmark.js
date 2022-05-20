@@ -12,13 +12,13 @@ module.exports = class Bookmark extends Model {
             // RetweetId
         }, {
             modelName: 'Bookmark',
-            tableName: 'bookmark',
+            tableName: 'bookmarks',
             charset: 'utf8',
             collate: 'utf8_general_ci',
             sequelize,
         });
     }
     static associate(db) {
-
+        db.Bookmark.belongsTo(db.User);
     }
 };

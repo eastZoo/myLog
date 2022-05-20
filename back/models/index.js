@@ -4,6 +4,7 @@ const hashtag = require('./hashtag');
 const image = require('./image');
 const post = require('./post');
 const user = require('./user');
+const bookmark = require('./bookmark');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -13,6 +14,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 db.Comment = comment;
 db.Hashtag = hashtag;
+db.Bookmark = bookmark;
 db.Image = image;
 db.Post = post;
 db.User = user;
